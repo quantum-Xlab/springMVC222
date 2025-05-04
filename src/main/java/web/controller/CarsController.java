@@ -3,20 +3,28 @@ package web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import web.models.Car;
+import web.service.CarServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Controller
-public class Cars {
+public class CarsController {
 
     @GetMapping(value = "/cars")
-    public String printWelcome(ModelMap model) {
-        List<String> messages = new ArrayList<>();
-        messages.add("Hello!");
-        messages.add("I'm Spring MVC application");
-        messages.add("5.2.0 version by sep'19 ");
-        model.addAttribute("messages", messages);
-        return "index";
+    public String printCars(ModelMap model, @RequestParam(value = "count", defaultValue = "5") int count) {
+        List<Car> cars = new ArrayList<>();
+        cars.add(new Car("Lada sedan", "baklazhan", 1));
+        cars.add(new Car("Moskvich Svyatogor", "s ozinkovkoy", 1));
+        cars.add(new Car("Xiaomi", "red", 0));
+        cars.add(new Car("Tesla", "grey", 0));
+        cars.add(new Car("Mercedes", "anthracite", 6));
+
+        model.addAttribute("cars", new CarServiceImpl().getCars(cars, count));
+        return "cars";
     }
+
 }
